@@ -7,7 +7,7 @@ const connection = new Mysql({
     host:'localhost', 
     user:'root', 
     password:'', 
-    database:'test'
+    database:'lr1_1'
 })
 
 // обработка параметров из формы.
@@ -22,16 +22,22 @@ var qs = require('querystring');
         });
 
         request.on('end', function () {
-			var post = qs.parse(body);
-			const id = Number(post['col0']);
-			const candidate =  connection.query(`SELECT * FROM myarttable WHERE id=${id}`);
-			if (candidate.length > 0) {
-				var sUpdate = `UPDATE myarttable SET text = "${post['col1']}", description = "${post['col2']}", keywords = "${post['col3']}" where id = ${id}`;
-				var results =  connection.query(sUpdate);
-				console.log('Done. Hint: '+sUpdate);
-			} else {
-				console.log('Fail. Hint: no rows with this id');
+			try {
+				var post = qs.parse(body);
+				const id = Number(post['col0']);
+				const candidate =  connection.query(`SELECT * FROM individual WHERE id_individual=${id}`);
+				if (candidate.length > 0) {
+					var sUpdate = `UPDATE individual SET${post['col1'] !== '' ?` id_borrowers=${post['col1']},` : ''}${post['col2'] !== '' ? ` first_name='${post['col2']}',` : ''}${post['col3'] !== '' ? ` last_name='${post['col3']}',`: ''}${post['col4'] !== '' ? ` surname='${post['col4']}',` : ''}${post['col5']!== '' ? ` passport='${post['col5']}',` : ''}${post['col6'] !== '' ? ` inn='${post['col6']}',` : ''}${post['col7'] !== '' ? ` snils='${post['col7']}',` : ''}${post['col8'] !== '' ? ` driver_license='${post['col8']}',` : ''}${post['col9'] !== '' ? ` additional_docs='${post['col9']}',` : ''}${post['col10'] !== '' ? ` comment='${post['col10']}',` : ''}`.slice(0,-1) + ` where id_individual = ${id}`;
+					console.log(sUpdate)
+					var results =  connection.query(sUpdate);
+					console.log('Done. Hint: '+sUpdate);
+				} else {
+					console.log('Fail. Hint: no rows with this id');
+				}
+			} catch(e) {
+				console.log(e)
 			}
+			
 			
         });
     }
@@ -39,15 +45,28 @@ var qs = require('querystring');
 
 // выгрузка массива данных.
 function ViewSelect(res) {
-	var results = connection.query('SHOW COLUMNS FROM myarttable');
+	var results = connection.query('SHOW COLUMNS FROM individual');
 	res.write('<tr>');
 	for(let i=0; i < results.length; i++)
 		res.write('<td>'+results[i].Field+'</td>');
 	res.write('</tr>');
 
-	var results = connection.query('SELECT * FROM myarttable WHERE id>14 ORDER BY id DESC');
+	var results = connection.query('SELECT * FROM individual ORDER BY id_individual DESC');
 	for(let i=0; i < results.length; i++)
-		res.write('<tr><td>'+String(results[i].id)+'</td><td>'+results[i].text+'</td><td>'+results[i].description+'</td><td>'+results[i].keywords+'</td></tr>');
+		res.write(`
+		<tr>
+			<td>${String(results[i].id_individual)}</td>
+			<td>${String(results[i].id_borrowers)}</td>
+			<td>${String(results[i].first_name)}</td>
+			<td>${String(results[i].last_name)}</td>
+			<td>${String(results[i].surname)}</td>
+			<td>${String(results[i].passport)}</td>
+			<td>${String(results[i].inn)}</td>
+			<td>${String(results[i].snils)}</td>
+			<td>${String(results[i].driver_license)}</td>
+			<td>${String(results[i].additional_docs)}</td>
+			<td>${String(results[i].comment)}</td>
+		</tr>`);
 }
 function ViewVer(res) {
 	var results = connection.query('SELECT VERSION() AS ver');

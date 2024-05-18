@@ -8,6 +8,19 @@
 body {
 	font-family: sans-serif;
 	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+}
+form {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+}
+
+form div {
+	display: inline-block;
 }
 table {
 	width: 93%;
@@ -43,7 +56,6 @@ td {
     height: 20px;
 }
 td:first-child {
-	width: 35px;
 	text-align: center;
 }
 h1, h1 a:visited {
@@ -78,11 +90,18 @@ input[type="text"] {
     <body>
         <h1><a href=".">Как можно работать с таблицами в MySQL на Node.js</a></h1>
         <form action="." method="post">
-			<label>ID</label><div> 0: </div><input type="text" name="col0" placeholder="id"/>
-            <label>Значение</label><div> 1: </div><input type="text" name="col1" value="Первый ..." />
-            <label>Значение</label><div> 2: </div><input type="text" name="col2" value="Второй параметр" />
-            <label>Значение</label><div> 3: </div><input type="text" name="col3" value="Третий пара..." />
-            <input type="submit" value="Изменить" />
+			<div><label>ID</label><div> 0: </div><input type="text" name="col0" placeholder="id_individual"/></div>
+            <div><label>Значение</label><div> 1: </div><input type="text" name="col1"  placeholder="id_borrowers"/></div>
+            <div><label>Значение</label><div> 2: </div><input type="text" name="col2" placeholder="first_name" /></div>
+            <div><label>Значение</label><div> 3: </div><input type="text" name="col3" placeholder="last_name" /></div>
+			<div><label>Значение</label><div> 4: </div><input type="text" name="col4" placeholder="surname" /></div>
+			<div><label>Значение</label><div> 5: </div><input type="text" name="col5" placeholder="passport" /></div>
+			<div><label>Значение</label><div> 6: </div><input type="text" name="col6" placeholder="inn" /></div>
+			<div><label>Значение</label><div> 7: </div><input type="text" name="col7" placeholder="snils" /></div>
+			<div><label>Значение</label><div> 8: </div><input type="text" name="col8" placeholder="driver_license" /></div>
+			<div><label>Значение</label><div> 9: </div><input type="text" name="col9" placeholder="additional_docs" /></div>
+			<div><label>Значение</label><div> 10: </div><input type="text" name="col10" placeholder="comments" /></div>
+            <div><input type="submit" value="Изменить" /></div>
         </form>
 		<br />
 		<table>
